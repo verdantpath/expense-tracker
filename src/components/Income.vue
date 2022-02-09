@@ -11,6 +11,7 @@
         <input v-model="incomeFields.other" type="text" placeholder="Enter your other monthly income" />
       </div>
     </form>
+    <p>{{ totalIncome }}</p>
   </div>
 </template>
 
@@ -23,8 +24,24 @@ export default {
         logicalPosition: '',
         other: ''
       },
+      totalIncome: 0,
     }
-  }
+  },
+  methods: {
+    updateTotals() {
+      this.totalIncome = parseFloat(
+        Number(this.incomeFields.logicalPosition)
+      + Number(this.incomeFields.other)  
+      ).toFixed(2);
+      this.$store.dispatch('updateTotalIncome', this.totalIncome);
+    },
+  },
+  computed() {
+
+  },
+  updated() {
+    this.updateTotals();
+  },
 }
 </script>
 

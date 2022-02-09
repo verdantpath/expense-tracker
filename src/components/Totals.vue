@@ -9,7 +9,7 @@
      <p>Total expenses: {{ totalExpenses }}</p>
      <p>Total income: {{ totalIncome }}</p>
      <p>Extra money: {{ totalIncome - totalExpenses }}</p>
-     <p>Foo: {{ getTotalExpenses }}</p>
+     <p>Foo: {{ getTotalIncome }}</p>
      <!-- <p>computedTotalExpenses: {{ computedTotalExpenses }}</p> -->
   </div>
 </template>
@@ -39,6 +39,7 @@
       ...mapGetters([
         'getFoo',
         'getTotalExpenses',
+        'getTotalIncome'
       ]),
     }
   }
