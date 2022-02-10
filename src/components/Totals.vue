@@ -30,6 +30,7 @@
     methods: {
       updateTotals() {
         this.totalExpenses = this.$store.getters.getTotalExpenses;
+        this.totalIncome = this.$store.getters.getTotalIncome;
       }
     },
     computed: {
