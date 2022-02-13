@@ -27,11 +27,17 @@
         testers: 0  
       } 
     },
+    emits: [
+      'clear-fields'
+    ],
     methods: {
       updateTotals() {
         this.totalExpenses = this.$store.getters.getTotalExpenses;
         this.totalIncome = this.$store.getters.getTotalIncome;
-      }
+      },
+      clearAllFields() {
+        this.emitter.emit('clear-fields');
+      },
     },
     computed: {
       // foo() {

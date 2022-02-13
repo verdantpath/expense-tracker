@@ -56,9 +56,21 @@ h1 {
 .ui.form input[type="text"] {
   font-size: 0.75em !important;
   display: inline-block;
-  width: 50%;
+  width: 35%;
 }
 .ui.form input[type="text"]::placeholder {
   color: #999;
+}
+.field {
+  position: relative;
+}
+.show-more {
+  font-size: 2em;
+  cursor: pointer;
+  width: 15%;
+  text-align: center;
+  display: inline-block;
+  top: 0.25em;
+  position: absolute;
 }
 </style>

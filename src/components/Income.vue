@@ -10,8 +10,8 @@
         <label>Other</label>
         <input v-model="incomeFields.other" type="text" placeholder="Enter your other monthly income" />
       </div>
-    </form>
     <p>{{ totalIncome }}</p>
+    </form>
   </div>
 </template>
 
@@ -29,15 +29,34 @@ export default {
   },
   methods: {
     updateTotals() {
-      this.totalIncome = parseFloat(
-        Number(this.incomeFields.logicalPosition)
-      + Number(this.incomeFields.other)  
-      ).toFixed(2);
+      // this.totalIncome = parseFloat(
+      //   Number(this.incomeFields.logicalPosition)
+      // + Number(this.incomeFields.other)  
+      // ).toFixed(2);
+      this.totalIncome = Object.keys(this.incomeFields)
+      .reduce((acc,key) => {
+        return parseFloat(acc + Number(this.incomeFields[key]));
+      }, 0).toFixed(2);
       this.$store.dispatch('updateTotalIncome', this.totalIncome);
     },
   },
   computed() {
 
+  },
+  created() {
+    this.emitter.on('clear-fields', () => {
+      console.log('income cleared');
+      Object.keys(this.incomeFields).forEach(key => {
+        this.incomeFields[key] = '';
+      });
+      
+      // console.log(this.incomeFields);
+      // this.incomeFields.other = '';
+      // for (let field in this.incomeFields) {
+      //   // console.log(field);
+      //   field.value = '';
+      // }
+    });
   },
   updated() {
     this.updateTotals();

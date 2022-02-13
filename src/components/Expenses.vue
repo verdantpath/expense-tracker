@@ -46,6 +46,15 @@
           <div class="field">
             <label>Entertainment and other</label>
             <input v-model="expenseFields.entertainment" type="text" placeholder="Enter your monthly entertainment and other expenses" />
+            <span class="show-more" @click="addMoreEntertainment = !addMoreEntertainment">+</span>
+            <div v-if="addMoreEntertainment">
+              <div v-for="(item,key) in this.entertainmentFields" :key="key">
+                <!-- <input type="text" :placeholder="this.entertainmentFields.key" />
+                <input type="text" placeholder="Amount" /> -->
+                <p>{{ key }} - {{ this.entertainmentFields[key] }}</p>
+              </div>
+              <p @click="addField(item, entertainmentFields)">Add Another</p>
+            </div>
           </div>  
           <p>{{ totalExpenses }}</p>
         </form>
@@ -72,6 +81,10 @@ export default {
         records: '',
         entertainment: ''
       },
+      entertainmentFields: [
+        {item: ''}
+      ],
+      addMoreEntertainment: true,
       totalExpenses: 0,
       // foo: foo,
     }
@@ -82,25 +95,29 @@ export default {
   methods: {
     updateTotals() {
       // event.preventDefault();
-      this.totalExpenses = parseFloat(
-        Number(this.expenseFields.rent)
-      + Number(this.expenseFields.cellular)
-      + Number(this.expenseFields.internet)
-      + Number(this.expenseFields.energy)
-      + Number(this.expenseFields.netflix)
-      + Number(this.expenseFields.vpn)
-      + Number(this.expenseFields.carInsurance)
-      + Number(this.expenseFields.gasoline)
-      + Number(this.expenseFields.food)
-      + Number(this.expenseFields.records)
-      + Number(this.expenseFields.entertainment)
-      ).toFixed(2);
-      this.$store.dispatch('updateTotalExpenses', this.totalExpenses);
-
-      // this.totalIncome = parseFloat(
-      //   Number(this.incomeFields.logicalPosition)
-      // + Number(this.incomeFields.other)  
+      // this.totalExpenses = parseFloat(
+      //   Number(this.expenseFields.rent)
+      // + Number(this.expenseFields.cellular)
+      // + Number(this.expenseFields.internet)
+      // + Number(this.expenseFields.energy)
+      // + Number(this.expenseFields.netflix)
+      // + Number(this.expenseFields.vpn)
+      // + Number(this.expenseFields.carInsurance)
+      // + Number(this.expenseFields.gasoline)
+      // + Number(this.expenseFields.food)
+      // + Number(this.expenseFields.records)
+      // + Number(this.expenseFields.entertainment)
       // ).toFixed(2);
+      this.totalExpenses = Object.keys(this.expenseFields)
+      .reduce((acc,key) => {
+          return parseFloat(acc + Number(this.expenseFields[key]))
+        }, 0).toFixed(2);
+      
+      this.$store.dispatch('updateTotalExpenses', this.totalExpenses);
+    },
+    addField(value, fieldType) {
+
+      fieldType.push({ value: "" });
     },
     updateFoo() {
       this.$store.dispatch('updateFoo', this.foo);
@@ -118,6 +135,12 @@ export default {
     this.updateFoo();
     console.log(this.expenseFields.rent);
     console.log("@@@ ", process.env.VUE_APP_LOCAL_URL, process.env.NODE_ENV, process.env.BASE_URL);
+    this.emitter.on('clear-fields', () => {
+      console.log('expenses cleared');
+      Object.keys(this.expenseFields).forEach(key => {
+        this.expenseFields[key] = '';
+      });
+    });
   },
   updated() {
     this.updateTotals();
