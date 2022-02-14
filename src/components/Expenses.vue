@@ -47,13 +47,13 @@
             <label>Entertainment and other</label>
             <input v-model="expenseFields.entertainment" type="text" placeholder="Enter your monthly entertainment and other expenses" />
             <span class="show-more" @click="addMoreEntertainment = !addMoreEntertainment">+</span>
-            <div v-if="addMoreEntertainment">
-              <div v-for="(item,key) in this.entertainmentFields" :key="key">
-                <!-- <input type="text" :placeholder="this.entertainmentFields.key" />
-                <input type="text" placeholder="Amount" /> -->
-                <p>{{ key }} - {{ this.entertainmentFields[key] }}</p>
+            <div v-if="addMoreEntertainment" class="add-more-container">
+              <div class="add-item" v-for="(item,key) in this.entertainmentFields" :key="key" :parentField="expenseFields.entertainment">
+                <input type="text" v-model="this.entertainmentFields[key].item" placeholder="Description" />
+                <input type="text" v-model="this.entertainmentFields[key].amount" placeholder="Amount" />
+                <span class="remove-item" @click="removeField(key, this.entertainmentFields, 'entertainment')">-</span>
               </div>
-              <p @click="addField(item, entertainmentFields)">Add Another</p>
+              <button @click="addField(this.entertainmentFields, 'entertainment', $event)" class="ui button">Add Another</button>
             </div>
           </div>  
           <p>{{ totalExpenses }}</p>
@@ -82,9 +82,12 @@ export default {
         entertainment: ''
       },
       entertainmentFields: [
-        {item: ''}
+        {
+          item: '', 
+          amount: null
+        }
       ],
-      addMoreEntertainment: true,
+      addMoreEntertainment: false,
       totalExpenses: 0,
       // foo: foo,
     }
@@ -93,6 +96,11 @@ export default {
     msg: String,
   },
   methods: {
+    sumFields(fieldType) {
+      return Object.keys(fieldType).reduce((acc,key) => {
+        return parseFloat(acc + Number(fieldType[key].amount));
+      }, 0).toFixed(2);
+    },
     updateTotals() {
       // event.preventDefault();
       // this.totalExpenses = parseFloat(
@@ -115,9 +123,16 @@ export default {
       
       this.$store.dispatch('updateTotalExpenses', this.totalExpenses);
     },
-    addField(value, fieldType) {
-
-      fieldType.push({ value: "" });
+    addField(fieldType, parentField, event) {
+      console.log("@@@", parentField);
+      event.preventDefault();
+      fieldType.push({ item: "", amount: null });
+      this.expenseFields[parentField] = this.sumFields(fieldType);
+    },
+    removeField(index, fieldType, parentField) {
+      console.log("%%%: ", parentField)
+      fieldType.splice(index, 1);
+      this.expenseFields[parentField] = this.sumFields(fieldType)
     },
     updateFoo() {
       this.$store.dispatch('updateFoo', this.foo);

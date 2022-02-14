@@ -43,7 +43,7 @@ html {
   /*color: #2c3e50;*/
   color: #ffc107;
   background-color: #333;
-  height: 100%
+  min-height: 100%
 }
 h1 {
   text-align: center;
@@ -64,7 +64,11 @@ h1 {
 .field {
   position: relative;
 }
-.show-more {
+.add-item {
+  position: relative;
+}
+.show-more,
+.remove-item {
   font-size: 2em;
   cursor: pointer;
   width: 15%;
@@ -72,5 +76,16 @@ h1 {
   display: inline-block;
   top: 0.25em;
   position: absolute;
+}
+.add-more-container {
+  text-align: right;
+  padding-right: 2em;
+}
+.add-more-container input {
+  margin: 3px !important;
+  width: 40% !important;
+}
+.add-more-container button {
+  margin-top: 5px !important;
 }
 </style>
