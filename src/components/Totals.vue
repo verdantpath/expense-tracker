@@ -36,7 +36,11 @@
         this.totalIncome = this.$store.getters.getTotalIncome;
       },
       clearAllFields() {
-        this.emitter.emit('clear-fields');
+        if(confirm("Do you really want to clear all fields and start over?")) {
+          this.emitter.emit('clear-fields');
+          this.totalExpenses = 0;
+          this.totalIncome = 0;
+        }
       },
     },
     computed: {

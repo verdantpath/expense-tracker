@@ -12,7 +12,6 @@
 </template>
 
 <script>
-// import HelloWorld from './components/HelloWorld.vue'
 import Expenses from './components/Expenses.vue'
 import Income from './components/Income.vue'
 import Totals from './components/Totals.vue'
@@ -20,7 +19,6 @@ import Totals from './components/Totals.vue'
 export default {
   name: 'App',
   components: {
-    // HelloWorld,
     Expenses,
     Income,
     Totals
@@ -29,6 +27,12 @@ export default {
 </script>
 
 <style>
+@media only screen and (min-width: 1200px) {
+  .ui.grid.container {
+    width: 75% !important;
+    max-width: 1600px !important;
+  }
+}
 html {
   height: 100%;
 }
@@ -72,14 +76,15 @@ h1 {
   font-size: 2em;
   cursor: pointer;
   width: 15%;
-  text-align: center;
+  text-align: left;
+  padding-left: 0.25em;
   display: inline-block;
-  top: 0.25em;
+  top: 0.18em;
   position: absolute;
 }
 .add-more-container {
   text-align: right;
-  padding-right: 2em;
+  padding: 0.5em 2em;
 }
 .add-more-container input {
   margin: 3px !important;
@@ -87,5 +92,6 @@ h1 {
 }
 .add-more-container button {
   margin-top: 5px !important;
+  font-size: 0.75em !important;
 }
 </style>
